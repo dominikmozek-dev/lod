@@ -1,227 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Palubní počítač</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    :root { --text:#e1f7ff; --muted:#81aabd; --cyan:#62eeff; --amber:#ffd16b; --red:#ff5b7b; --green:#79ffb2; --blue:#8fa8ff; }
-    * { box-sizing:border-box; }
-    html, body { margin:0; min-height:100%; background:radial-gradient(circle at top,#102035 0%,#050a12 45%,#02050a 100%); color:var(--text); }
-    body { font-family:'Share Tech Mono', monospace; }
-    .wrap { min-height:100vh; padding:18px; display:grid; grid-template-rows:auto 1fr; gap:16px; }
-    .topbar, .screen { background:linear-gradient(180deg,rgba(13,24,40,.95),rgba(6,13,22,.95)); border:1px solid rgba(98,238,255,.18); border-radius:18px; box-shadow:0 0 0 1px rgba(98,238,255,.08),0 0 28px rgba(98,238,255,.06),inset 0 0 26px rgba(98,238,255,.03); }
-    .topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:18px 24px; }
-    .label { color:var(--muted); font-size:.82rem; }
-    .title, .timer, .msg-title, .status { font-family:'Orbitron', sans-serif; letter-spacing:.08em; text-transform:uppercase; }
-    .title { font-size:clamp(1.35rem,2.5vw,2.1rem); }
-    .timer { font-size:clamp(2.15rem,5vw,3.7rem); color:var(--amber); text-shadow:0 0 14px rgba(255,209,107,.28); }
-    .screen { padding:20px; overflow:auto; background-image:repeating-linear-gradient(180deg,rgba(98,238,255,.045) 0,rgba(98,238,255,.045) 2px,transparent 2px,transparent 6px),linear-gradient(180deg,rgba(2,14,22,.96),rgba(5,20,30,.94)); }
-    .messages { display:grid; gap:12px; align-content:start; }
-    .message { border-left:5px solid var(--cyan); background:rgba(98,238,255,.055); border-radius:14px; padding:13px 16px 11px; box-shadow:inset 0 0 0 1px rgba(98,238,255,.1); }
-    .message.warning { border-left-color:var(--amber); background:rgba(255,209,107,.08); }
-    .message.critical { border-left-color:var(--red); background:rgba(255,91,123,.1); }
-    .message.success { border-left-color:var(--green); background:rgba(121,255,178,.08); }
-    .message.info { border-left-color:var(--blue); background:rgba(143,168,255,.08); }
-    .head { display:flex; justify-content:space-between; align-items:start; gap:12px; margin-bottom:6px; }
-    .msg-title { font-size:clamp(.92rem,1.45vw,1.2rem); }
-    .msg-code, .msg-meta { color:var(--muted); font-size:.82rem; }
-    .msg-text { font-size:clamp(.92rem,1.2vw,1.08rem); line-height:1.42; max-width:72ch; }
-    .msg-meta { margin-top:8px; }
-    .status { font-size:.68rem; color:var(--cyan); padding:7px 10px; border:1px solid rgba(98,238,255,.2); border-radius:999px; background:rgba(98,238,255,.08); }
-    .empty { min-height:40vh; display:grid; place-items:center; text-align:center; color:var(--muted); border:1px dashed rgba(98,238,255,.12); border-radius:16px; }
-    .error { color:#ffd4dc; border-color:rgba(255,91,123,.28); background:rgba(255,91,123,.07); }
-    @media (max-width:860px) { .topbar { flex-direction:column; align-items:flex-start; } .timer { align-self:flex-end; } .wrap { padding:12px; } .screen { padding:14px; } }
+    :root{--text:#e1f7ff;--muted:#81aabd;--cyan:#62eeff;--amber:#ffd16b;--red:#ff5b7b;--green:#79ffb2;--blue:#8fa8ff}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at top,#102035 0%,#050a12 45%,#02050a 100%);color:var(--text)}body{font-family:'Share Tech Mono',monospace}.wrap{min-height:100vh;padding:18px;display:grid;grid-template-rows:auto 1fr;gap:16px}.topbar,.screen{background:linear-gradient(180deg,rgba(13,24,40,.95),rgba(6,13,22,.95));border:1px solid rgba(98,238,255,.18);border-radius:18px;box-shadow:0 0 0 1px rgba(98,238,255,.08),0 0 28px rgba(98,238,255,.06),inset 0 0 26px rgba(98,238,255,.03)}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px}.label{color:var(--muted);font-size:.82rem}.title,.timer,.msg-title,.status{font-family:'Orbitron',sans-serif;letter-spacing:.08em;text-transform:uppercase}.title{font-size:clamp(1.35rem,2.5vw,2.1rem)}.timer{font-size:clamp(2.15rem,5vw,3.7rem);color:var(--amber);text-shadow:0 0 14px rgba(255,209,107,.28)}.screen{padding:20px;overflow:auto;background-image:repeating-linear-gradient(180deg,rgba(98,238,255,.045) 0,rgba(98,238,255,.045) 2px,transparent 2px,transparent 6px),linear-gradient(180deg,rgba(2,14,22,.96),rgba(5,20,30,.94))}.messages{display:grid;gap:12px;align-content:start}.message{border-left:5px solid var(--cyan);background:rgba(98,238,255,.055);border-radius:14px;padding:13px 16px 11px;box-shadow:inset 0 0 0 1px rgba(98,238,255,.1)}.message.warning{border-left-color:var(--amber);background:rgba(255,209,107,.08)}.message.critical{border-left-color:var(--red);background:rgba(255,91,123,.1)}.message.success{border-left-color:var(--green);background:rgba(121,255,178,.08)}.message.info{border-left-color:var(--blue);background:rgba(143,168,255,.08)}.head{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:6px}.msg-title{font-size:clamp(.92rem,1.45vw,1.2rem)}.msg-code,.msg-meta{color:var(--muted);font-size:.82rem}.msg-text{font-size:clamp(.92rem,1.2vw,1.08rem);line-height:1.42;max-width:72ch}.msg-meta{margin-top:8px}.status{font-size:.68rem;color:var(--cyan);padding:7px 10px;border:1px solid rgba(98,238,255,.2);border-radius:999px;background:rgba(98,238,255,.08)}.empty{min-height:40vh;display:grid;place-items:center;text-align:center;color:var(--muted);border:1px dashed rgba(98,238,255,.12);border-radius:16px}.error{color:#ffd4dc;border-color:rgba(255,91,123,.28);background:rgba(255,91,123,.07)}@media(max-width:860px){.topbar{flex-direction:column;align-items:flex-start}.timer{align-self:flex-end}.wrap{padding:12px}.screen{padding:14px}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="topbar">
-      <div>
-        <div class="label">Aktivní hlášení</div>
-        <div class="title">Stav mateřské lodi</div>
-      </div>
-      <div class="timer" id="timer">105:00</div>
-    </header>
-    <main class="screen">
-      <div class="messages" id="messages"></div>
-    </main>
+    <header class="topbar"><div><div class="label">Aktivní hlášení</div><div class="title">Stav mateřské lodi</div></div><div class="timer" id="timer">105:00</div></header>
+    <main class="screen"><div class="messages" id="messages"></div></main>
   </div>
-
   <script>
-    const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMNCzWSMUDvVLyPFQQTASOa4lPwRgJqf9EVekqjZ1rfpvogk7zocqmndMMww2IDpDkbTcHGXldS1GP/pub?gid=0&single=true&output=csv';
-    const POLL_MS = 4000;
-    const START_SECONDS = 105 * 60;
-    const STORE_KEY = 'vesmirna-lod-time-v3';
+    const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbyCZyrcI-E1rEDXKARBZa0Nu13SaAn_bLtmY30HKnM6HbJWijeVAWfXsJGvgN4X9SNKqw/exec';
+    const POLL_MS=2500, START_SECONDS=105*60, STORE_KEY='vesmirna-lod-apps-script-v1';
+    const messagesEl=document.getElementById('messages'),timerEl=document.getElementById('timer');
+    let lastSignature='',state=loadState();
 
-    const messagesEl = document.getElementById('messages');
-    const timerEl = document.getElementById('timer');
-    let lastMessageSignature = '';
-    let state = loadState();
+    function loadState(){try{const s=JSON.parse(localStorage.getItem(STORE_KEY));if(s&&Number.isFinite(s.end)&&Array.isArray(s.usedTimeIds))return s}catch(e){}return{end:Date.now()+START_SECONDS*1000,usedTimeIds:[]}}
+    function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){}}
+    function visible(value){return['1','true','ano','yes'].includes(String(value||'').trim().toLowerCase())}
+    function esc(value){const e=document.createElement('div');e.textContent=value||'';return e.innerHTML}
+    function renderTimer(){const sec=Math.max(0,Math.floor((state.end-Date.now())/1000));timerEl.textContent=`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`}
 
-    function loadState() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(STORE_KEY));
-        if (saved && Number.isFinite(saved.end) && Array.isArray(saved.usedTimeIds)) return saved;
-      } catch (error) {}
-      return { end: Date.now() + START_SECONDS * 1000, usedTimeIds: [] };
+    function renderMessages(rows){
+      const active=rows.filter(r=>r.id&&String(r.action||'').toLowerCase()==='show'&&visible(r.visible));
+      const signature=JSON.stringify(active.map(r=>({id:r.id,title:r.title,text:r.text,level:r.level,code:r.code,visible:r.visible})));
+      if(signature===lastSignature)return;
+      lastSignature=signature;
+      messagesEl.innerHTML='';
+      if(!active.length){messagesEl.innerHTML='<div class="empty"><div><div class="label">Čekám na další přenos</div><div class="title" style="font-size:1.2rem;margin-top:8px">Žádné aktivní chyby</div></div></div>';return}
+      active.forEach(r=>{const level=String(r.level||'info').toLowerCase(),card=document.createElement('article');card.className=`message ${level}`;card.innerHTML=`<div class="head"><div><div class="msg-title">${esc(r.title)}</div><div class="msg-code">Kód události: ${esc(r.code||r.id)}</div></div><div class="status">${esc(level)}</div></div><div class="msg-text">${esc(r.text)}</div><div class="msg-meta">Aktivní porucha</div>`;messagesEl.appendChild(card)});
     }
 
-    function saveState() {
-      try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (error) {}
-    }
-
-    function formatTime(seconds) {
-      const safe = Math.max(0, seconds);
-      const minutes = String(Math.floor(safe / 60)).padStart(2, '0');
-      const rest = String(safe % 60).padStart(2, '0');
-      return `${minutes}:${rest}`;
-    }
-
-    function renderTimer() {
-      const seconds = Math.floor((state.end - Date.now()) / 1000);
-      timerEl.textContent = formatTime(seconds);
-    }
-
-    function parseCsv(text) {
-      const rows = [];
-      let row = [];
-      let value = '';
-      let quoted = false;
-
-      for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        const next = text[i + 1];
-
-        if (ch === '"') {
-          if (quoted && next === '"') { value += '"'; i++; }
-          else quoted = !quoted;
-        } else if (ch === ',' && !quoted) {
-          row.push(value);
-          value = '';
-        } else if ((ch === '\n' || ch === '\r') && !quoted) {
-          if (ch === '\r' && next === '\n') i++;
-          row.push(value);
-          value = '';
-          if (row.some(cell => cell.trim() !== '')) rows.push(row);
-          row = [];
-        } else {
-          value += ch;
-        }
-      }
-
-      if (value.length || row.length) {
-        row.push(value);
-        if (row.some(cell => cell.trim() !== '')) rows.push(row);
-      }
-
-      if (!rows.length) return [];
-      const headers = rows[0].map(header => header.trim());
-      return rows.slice(1).map(rowData => Object.fromEntries(headers.map((header, index) => [header, (rowData[index] || '').trim()])));
-    }
-
-    function isVisible(value) {
-      return ['1', 'true', 'ano', 'yes'].includes(String(value).trim().toLowerCase());
-    }
-
-    function escapeHtml(value) {
-      const element = document.createElement('div');
-      element.textContent = value || '';
-      return element.innerHTML;
-    }
-
-    function renderMessages(rows) {
-      const active = rows.filter(row =>
-        row.id &&
-        String(row.action || '').toLowerCase() === 'show' &&
-        isVisible(row.visible)
-      );
-
-      const signature = JSON.stringify(active.map(row => ({
-        id: row.id,
-        title: row.title,
-        text: row.text,
-        level: row.level,
-        code: row.code,
-        visible: row.visible
-      })));
-
-      // Nic se nezměnilo: nepřekresluj seznam, tedy nic nebliká.
-      if (signature === lastMessageSignature) return;
-      lastMessageSignature = signature;
-      messagesEl.innerHTML = '';
-
-      if (!active.length) {
-        messagesEl.innerHTML = `
-          <div class="empty">
-            <div>
-              <div class="label">Čekám na další přenos</div>
-              <div class="title" style="font-size:1.2rem;margin-top:8px">Žádné aktivní chyby</div>
-            </div>
-          </div>`;
-        return;
-      }
-
-      active.forEach(row => {
-        const level = String(row.level || 'info').toLowerCase();
-        const card = document.createElement('article');
-        card.className = `message ${level}`;
-        card.innerHTML = `
-          <div class="head">
-            <div>
-              <div class="msg-title">${escapeHtml(row.title)}</div>
-              <div class="msg-code">Kód události: ${escapeHtml(row.code || row.id)}</div>
-            </div>
-            <div class="status">${escapeHtml(level)}</div>
-          </div>
-          <div class="msg-text">${escapeHtml(row.text)}</div>
-          <div class="msg-meta">Aktivní porucha</div>`;
-        messagesEl.appendChild(card);
+    function applyTimeRows(rows){
+      rows.filter(r=>r.id&&String(r.action||'').toLowerCase()==='time'&&visible(r.visible)).forEach(r=>{
+        if(state.usedTimeIds.includes(r.id))return;
+        state.end+=(Number(r.secondsDelta)||0)*1000;
+        state.usedTimeIds.push(r.id);
+        saveState();
       });
     }
 
-    function applyTimeRows(rows) {
-      rows
-        .filter(row => row.id && String(row.action || '').toLowerCase() === 'time' && isVisible(row.visible))
-        .forEach(row => {
-          if (state.usedTimeIds.includes(row.id)) return;
-          const secondsDelta = Number(row.secondsDelta) || 0;
-          state.end += secondsDelta * 1000;
-          state.usedTimeIds.push(row.id);
-          saveState();
-          renderTimer();
-        });
-    }
-
-    async function syncSheet() {
-      try {
-        const response = await fetch(GOOGLE_SHEET_CSV_URL, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const rows = parseCsv(await response.text());
+    async function sync(){
+      try{
+        const response=await fetch(`${APPS_SCRIPT_URL}?t=${Date.now()}`,{cache:'no-store'});
+        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        const data=await response.json();
+        if(!data.ok)throw new Error(data.error||'Apps Script nevrátil data.');
+        const rows=Array.isArray(data.rows)?data.rows:[];
         renderMessages(rows);
         applyTimeRows(rows);
-      } catch (error) {
-        if (!lastMessageSignature.startsWith('ERROR:')) {
-          lastMessageSignature = `ERROR:${error.message}`;
-          messagesEl.innerHTML = `
-            <div class="empty error">
-              <div>
-                <div class="label">Chyba načítání Google Sheetu</div>
-                <div class="msg-meta" style="margin-top:10px">${escapeHtml(error.message)}</div>
-              </div>
-            </div>`;
-        }
+      }catch(error){
+        const signature=`ERROR:${error.message}`;
+        if(lastSignature!==signature){lastSignature=signature;messagesEl.innerHTML=`<div class="empty error"><div><div class="label">Chyba načítání palubních dat</div><div class="msg-meta" style="margin-top:10px">${esc(error.message)}</div></div></div>`}
       }
     }
-
-    renderTimer();
-    setInterval(renderTimer, 250);
-    syncSheet();
-    setInterval(syncSheet, POLL_MS);
+    renderTimer();setInterval(renderTimer,250);sync();setInterval(sync,POLL_MS);
   </script>
 </body>
 </html>
